@@ -30,10 +30,12 @@ icon文件夹下存放了用户主页面的图形图标。
 题目
 1. xxx
 1.1 xxx
+1.1.1 xxx
+1.1.2 xxx
 1.2 xxx
 2. xxx
 ……
 ```
 ## 4. 界面说明
 程序运行界面如下
-![](./images/interface.PNG)
+![](https://github.com/yx3266/MindMapping/blob/master/images/interface.png)
