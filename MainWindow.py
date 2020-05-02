@@ -10,6 +10,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
+        #全局变量
         self.TypeGraph_List = ["Graph", "Digraph"]
         self.TypeEngine_List = ["dot", "neato", "fdp", "sfdp", "twopi", "circo"]
         self.FontSize_List = [2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 14.0, 16.0, 18.0, 20.0, 22.0, 24.0, 26.0, 28.0, 30.0]
@@ -31,7 +32,6 @@ class MainWindow(QMainWindow):
         self.NoteColor_List = ["Black", "Red", "Yellow", "Blue", "Brown", "Purple", "Orange"]
         self.NoteColor_ListChange = ["黑色", "红色", "黄色", "蓝色", "棕色", "紫色", "橘黄色"]
 
-        #全局变量与connect
         self.Files = []
         self.typegraph = self.TypeGraph_List[0]
         self.engine = self.TypeEngine_List[0]
@@ -42,55 +42,63 @@ class MainWindow(QMainWindow):
 
 
     def initUI(self):
+        # 程序窗口
         self.setWindowTitle("Mind Mapping")
         self.setWindowIcon(QIcon("icon/Map.png"))
         self.setGeometry(200,100,1000,500)
         self.Layout = QVBoxLayout()
 
+        # 菜单栏中打开文件
         self.action_OpenFile = QAction(QIcon("icon/File.png"), "&Open File", self)
         self.action_OpenFile.setStatusTip("Open one txt file or several images")
         self.action_OpenFile.setShortcut('Ctrl+O')
         self.action_OpenFile.triggered.connect(self.OpenFile)
 
+        # 菜单栏中退出
         self.action_Exit = QAction(QIcon("icon/Exit.png"), "&Exit", self)
         self.action_Exit.setStatusTip("Exit")
         self.action_Exit.setShortcut('Ctrl+Q')
         self.action_Exit.triggered.connect(self.Exit)
 
+        # 菜单栏中有向图还是无向图
         self.action_TypeGraph_List = []
         for i in range(len(self.TypeGraph_List)):
             self.DefineTypeGraph(i)
         self.action_TypeGraph_List[0].setChecked(True)
 
+        # 菜单栏中思维导图布局方式
         self.action_Engine_List = []
         for i in range(len(self.TypeEngine_List)):
             self.DefineEngine(i)
         self.action_Engine_List[0].setChecked(True)
 
+        # 菜单栏中高级属性之字体
         self.action_FontSize_List = []
         for i in range(len(self.FontSize_List)):
             self.DefineFontSize(i)
         self.action_FontSize_List[6].setChecked(True)
 
+        # 菜单栏中高级属性之边类型
         self.action_TypeEdge_List = []
         for i in range(len(self.TypeEdge_List)):
             self.DefineTypeEdge(i)
         self.action_TypeEdge_List[0].setChecked(True)
 
+        # 菜单栏中帮助
         self.action_Help = QAction(QIcon("icon/Help.png"), "&Help", self)
         self.action_Help.setStatusTip("Help")
         self.action_Help.setShortcut('Ctrl+H')
         self.action_Help.triggered.connect(self.Help)
 
-        #菜单
+        # 菜单
         self.menubar = self.menuBar()
 
-        #File
+        # 菜单栏"File"
         self.menu_File = self.menubar.addMenu("File(&F)")
         self.menu_File.addAction(self.action_OpenFile)
         self.menu_File.addAction(self.action_Exit)
 
-        #Advanced Settings
+        # 菜单栏"Settings"
         self.menu_AdvancedSettings = self.menubar.addMenu("Settings(&T)")
         self.TypeGraph = QMenu("Graph Type", self)
         for i in range(len(self.action_TypeGraph_List)):
@@ -109,12 +117,12 @@ class MainWindow(QMainWindow):
         self.menu_AdvancedSettings.addMenu(self.FontSize)
         self.menu_AdvancedSettings.addMenu(self.TypeEdge)
 
-        #Help
+        # 菜单栏"Help"
         self.menu_Help = self.menubar.addMenu("Help(&H)")
         self.menu_Help.addAction(self.action_Help)
 
 
-        #文件选择
+        # 主界面中文件选择
         self.layout_file = QHBoxLayout()
         self.label_select = QLabel("选择文件:")
         self.label_select.setFont(QFont("Myriad Pro", 10))
@@ -134,7 +142,7 @@ class MainWindow(QMainWindow):
         self.attribute = QGridLayout()
         self.attribute.setSpacing(20)
 
-        # 方向选择
+        # 主界面中思维导图方向选择
         self.TypeTree_Label = QLabel("方向:")
         self.attribute.addWidget(self.TypeTree_Label, 0, 0)
         self.TypeTree_Group = QButtonGroup()
@@ -145,7 +153,7 @@ class MainWindow(QMainWindow):
                 self.attribute.addWidget(self.TypeTree[self.TypeTree_List[i]], 0, i + 1)
         self.TypeTree[self.TypeTree_List[0]].setChecked(True)
 
-        #字体选择
+        # 主界面中字体选择
         self.TypeFace_Label = QLabel("字体:")
         self.attribute.addWidget(self.TypeFace_Label, 1, 0)
         self.TypeFace_Group = QButtonGroup()
@@ -164,7 +172,7 @@ class MainWindow(QMainWindow):
         self.attribute.addWidget(self.TypeFace_Com, 1, 5)
         self.TypeFace[self.TypeFace_List[0]].setChecked(True)
 
-        #边界框格式选择
+        # 主界面中边界框格式选择
         self.TypeBbox_Label = QLabel("边界框:")
         self.attribute.addWidget(self.TypeBbox_Label, 2, 0)
         self.TypeBbox_Group = QButtonGroup()
@@ -183,7 +191,7 @@ class MainWindow(QMainWindow):
         self.attribute.addWidget(self.TypeBbox_Com, 2, 5)
         self.TypeBbox[self.TypeBbox_List[0]].setChecked(True)
 
-        #文字颜色选择
+        # 主界面中文字颜色选择
         self.CharColor_Label = QLabel("文字颜色:")
         self.attribute.addWidget(self.CharColor_Label, 3, 0)
         self.CharColor_Group = QButtonGroup()
@@ -202,7 +210,7 @@ class MainWindow(QMainWindow):
         self.attribute.addWidget(self.CharColor_Com, 3, 5)
         self.CharColor[self.CharColor_List[0]].setChecked(True)
 
-        #边界框颜色选择
+        # 主界面中边界框颜色选择
         self.BboxColor_Label = QLabel("边界框颜色:")
         self.attribute.addWidget(self.BboxColor_Label, 4, 0)
         self.BboxColor_Group = QButtonGroup()
@@ -221,7 +229,7 @@ class MainWindow(QMainWindow):
         self.attribute.addWidget(self.BboxColor_Com, 4, 5)
         self.BboxColor[self.BboxColor_List[0]].setChecked(True)
 
-        #边颜色选择
+        # 主界面中边颜色选择
         self.EdgeColor_Label = QLabel("边颜色:")
         self.attribute.addWidget(self.EdgeColor_Label, 5, 0)
         self.EdgeColor_Group = QButtonGroup()
@@ -240,7 +248,7 @@ class MainWindow(QMainWindow):
         self.attribute.addWidget(self.EdgeColor_Com, 5, 5)
         self.EdgeColor[self.EdgeColor_List[0]].setChecked(True)
 
-        #注释格式选择
+        # 主界面中内容格式选择
         self.TypeNote_Label = QLabel("内容格式:")
         self.attribute.addWidget(self.TypeNote_Label, 6, 0)
         self.TypeNote_Group = QButtonGroup()
@@ -251,7 +259,7 @@ class MainWindow(QMainWindow):
             self.attribute.addWidget(self.TypeNote[self.TypeNote_List[i]], 6, i + 1)
         self.TypeNote[self.TypeNote_List[0]].setChecked(True)
 
-        # 注释颜色选择
+        # 主界面中内容颜色选择
         self.NoteColor_Label = QLabel("内容颜色:")
         self.attribute.addWidget(self.NoteColor_Label, 7, 0)
         self.NoteColor_Group = QButtonGroup()
@@ -270,7 +278,7 @@ class MainWindow(QMainWindow):
         self.attribute.addWidget(self.NoteColor_Com, 7, 5)
         self.NoteColor[self.NoteColor_List[0]].setChecked(True)
 
-        #生成及退出按钮
+        # 主界面中生成及退出按钮
         self.layout_decision = QHBoxLayout()
         self.image_button = QPushButton("生成图片")
         self.image_button.clicked.connect(self.Generate_Image)
@@ -286,7 +294,7 @@ class MainWindow(QMainWindow):
         self.layout_decision.addWidget(self.exit_button)
         self.layout_decision.addStretch(1)
 
-        #总体布局
+        # 主界面总体布局
         self.Layout.addStretch(1)
         self.Layout.addLayout(self.layout_file)
         self.Layout.addLayout(self.attribute)
@@ -298,7 +306,7 @@ class MainWindow(QMainWindow):
         self.central.setLayout(self.Layout)
         self.setCentralWidget(self.central)
 
-    def OpenFile(self):
+    def OpenFile(self):   # 实现文件选择功能，并对选择的文件进行筛查，查看是否符合规定
         self.Files, FileType = QFileDialog.getOpenFileNames(self, "Mand Mapping: Open File", "./", "All Files(*);;TXT File(*.txt);;Image Files(*.JPG, *.JPEG, *PNG, *GIF)")
         self.exts = []
         for i in range(len(self.Files)):
@@ -332,92 +340,92 @@ class MainWindow(QMainWindow):
                             sum_path += "&"
                     self.FilePath.setText(sum_path)
 
-    def TypeFace_Mutex(self):
+    def TypeFace_Mutex(self):   # 实现字体的单选按钮与下拉框的兼容
         if self.TypeFace_Com.currentText() == "更多":
             self.TypeFace[self.TypeFace_List[0]].setChecked(True)
         else:
             self.TypeFace_ex.setChecked(True)
 
-    def TypeBbox_Mutex(self):
+    def TypeBbox_Mutex(self):   # 实现边界框的单选按钮与下拉框的兼容
         if self.TypeBbox_Com.currentText() == "更多":
             self.TypeBbox[self.TypeBbox_List[0]].setChecked(True)
         else:
             self.TypeBbox_ex.setChecked(True)
 
-    def CharColor_Mutex(self):
+    def CharColor_Mutex(self):   # 实现字体颜色的单选按钮与下拉框的兼容
         if self.CharColor_Com.currentText() == "更多":
             self.CharColor[self.CharColor_List[0]].setChecked(True)
         else:
             self.CharColor_ex.setChecked(True)
 
-    def BboxColor_Mutex(self):
+    def BboxColor_Mutex(self):   # 实现边界框的单选按钮与下拉框的兼容
         if self.BboxColor_Com.currentText() == "更多":
             self.BboxColor[self.BboxColor_List[0]].setChecked(True)
         else:
             self.BboxColor_ex.setChecked(True)
 
-    def EdgeColor_Mutex(self):
+    def EdgeColor_Mutex(self):   # 实现边颜色的单选按钮与下拉框的兼容
         if self.EdgeColor_Com.currentText() == "更多":
             self.EdgeColor[self.EdgeColor_List[0]].setChecked(True)
         else:
             self.EdgeColor_ex.setChecked(True)
 
-    def NoteColor_Mutex(self):
+    def NoteColor_Mutex(self):   # 实现内容颜色的单选按钮与下拉框的兼容
         if self.NoteColor_Com.currentText() == "更多":
             self.NoteColor[self.NoteColor_List[0]].setChecked(True)
         else:
             self.NoteColor_ex.setChecked(True)
 
-    def Exit(self):
+    def Exit(self):   # 实现退出程序功能
         Reply = QMessageBox.question(self, 'EXIT ?',
                                      "Do you really want to EXIT ?",
                                      QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if Reply == QMessageBox.Yes:
             self.close()
 
-    def TypeTree_Decision(self):
+    def TypeTree_Decision(self):   # 返回选定的思维导图方向
         return self.TypeTree_List[self.TypeTree_ListChange.index(self.TypeTree_Group.checkedButton().text())]
 
-    def TypeFace_Decision(self):
+    def TypeFace_Decision(self):   # 返回选定的字体
         if self.TypeFace_Group.checkedButton().text() != "extra":
             return self.TypeFace_List[self.TypeFace_ListChange.index(self.TypeFace_Group.checkedButton().text())]
         else:
             return self.TypeFace_List[self.TypeFace_ListChange.index(self.TypeFace_Com.currentText())]
 
-    def TypeBbox_Decision(self):
+    def TypeBbox_Decision(self):   # 返回选定的边界框格式
         if self.TypeBbox_Group.checkedButton().text() != "extra":
             return self.TypeBbox_List[self.TypeBbox_ListChange.index(self.TypeBbox_Group.checkedButton().text())]
         else:
             return self.TypeBbox_List[self.TypeBbox_ListChange.index(self.TypeBbox_Com.currentText())]
 
-    def CharColor_Decision(self):
+    def CharColor_Decision(self):   # 返回选定的文字颜色
         if self.CharColor_Group.checkedButton().text() != "extra":
             return self.CharColor_List[self.CharColor_ListChange.index(self.CharColor_Group.checkedButton().text())]
         else:
             return self.CharColor_List[self.CharColor_ListChange.index(self.CharColor_Com.currentText())]
 
-    def BboxColor_Decision(self):
+    def BboxColor_Decision(self):   # 返回选定的边界框颜色
         if self.BboxColor_Group.checkedButton().text() != "extra":
             return self.BboxColor_List[self.BboxColor_ListChange.index(self.BboxColor_Group.checkedButton().text())]
         else:
             return self.BboxColor_List[self.BboxColor_ListChange.index(self.BboxColor_Com.currentText())]
 
-    def EdgeColor_Decision(self):
+    def EdgeColor_Decision(self):   # 返回选定的边颜色
         if self.EdgeColor_Group.checkedButton().text() != "extra":
             return self.EdgeColor_List[self.EdgeColor_ListChange.index(self.EdgeColor_Group.checkedButton().text())]
         else:
             return self.EdgeColor_List[self.EdgeColor_ListChange.index(self.EdgeColor_Com.currentText())]
 
-    def TypeNote_Decision(self):
+    def TypeNote_Decision(self):   # 返回选定的内容格式
         return self.TypeNote_List[self.TypeNote_ListChange.index(self.TypeNote_Group.checkedButton().text())]
 
-    def NoteColor_Decision(self):
+    def NoteColor_Decision(self):   # 返回选定的内容颜色
         if self.NoteColor_Group.checkedButton().text() != "extra":
             return self.NoteColor_List[self.NoteColor_ListChange.index(self.NoteColor_Group.checkedButton().text())]
         else:
             return self.NoteColor_List[self.NoteColor_ListChange.index(self.NoteColor_Com.currentText())]
 
-    def Generate_PDF(self):
+    def Generate_PDF(self):   # 生成PDF型思维导图
         print(self.TypeTree_Decision())
         print(self.TypeFace_Decision())
         print(self.TypeBbox_Decision())
@@ -428,7 +436,7 @@ class MainWindow(QMainWindow):
         print(self.TypeNote_Decision())
         self.Generate("pdf")
 
-    def Generate_Image(self):
+    def Generate_Image(self):   # 生成图片型思维导图
         print(self.TypeTree_Decision())
         print(self.TypeFace_Decision())
         print(self.TypeBbox_Decision())
@@ -439,7 +447,7 @@ class MainWindow(QMainWindow):
         print(self.TypeNote_Decision())
         self.Generate("jpg")
 
-    def depth(self, content):
+    def depth(self, content):   # 返回一行文本的标号以及内容
         label = "0123456789."
         while (content[0] == ' '):
             content = content[1:]
@@ -456,12 +464,13 @@ class MainWindow(QMainWindow):
                 temp_content = temp_content[1:]
         return num, temp_content
 
-    def Generate(self, file_format):
+    def Generate(self, file_format):   #生成file_format类型的思维导图并展示
         sum_list = [[], [], [], [], []]
         branch_dict = {}
         last_content = ['', '', '', '', '']
         content_dict = {}
 
+        # 再次进行文件格式筛查，实际上没必要，选择文件步骤已经做过
         try:
             print(self.exts)
             print(self.Files)
@@ -481,6 +490,7 @@ class MainWindow(QMainWindow):
                                  "You can select one txt file or several images",
                                  QMessageBox.Yes)
             return None
+        # 分析笔记结构
         for i in range(len(context)):
             depth_num, content = self.depth(context[i])
             if depth_num == []:
@@ -509,6 +519,7 @@ class MainWindow(QMainWindow):
         print(branch_dict)
         print("bbbbbbbbbb")
         print(content_dict)
+        # 生成思维导图实例，并设置导图属性
         if self.typegraph == self.TypeGraph_List[0]:
             g = Graph('G', format=file_format, engine=self.engine)
         else:
@@ -524,6 +535,7 @@ class MainWindow(QMainWindow):
         g.edge_attr['color'] = self.EdgeColor_Decision()
         g.edge_attr['style'] = self.typeedge
 
+        # 创建标题节点，并连接有归属关系的标题节点
         for i in range(5):
             if len(sum_list[i]) == 0:
                 pass
@@ -533,6 +545,7 @@ class MainWindow(QMainWindow):
                     if sum_list[i][j] in branch_dict.keys():
                         for k in range(len(branch_dict[sum_list[i][j]])):
                             g.edge(sum_list[i][j], branch_dict[sum_list[i][j]][k])
+        # 创建内容节点，并连接有归属关系的标题节点与内容节点
         for i in content_dict.keys():
             if i not in branch_dict.keys():
                 if self.TypeNote_Decision() == "None":
@@ -552,47 +565,47 @@ class MainWindow(QMainWindow):
         print("yoyoyoyoyoyoyyoyoyo")
         g.view("G")
 
-    def DefineTypeGraph(self, i):
+    def DefineTypeGraph(self, i):   # 生成菜单栏高级属性中的有向图/无向图选项
         self.action_TypeGraph_List.append(QAction(self.TypeGraph_List[i], self, checkable=True))
         self.action_TypeGraph_List[i].triggered.connect(lambda: self.TypeGraph_Decision(i))
 
-    def DefineEngine(self, i):
+    def DefineEngine(self, i):   # 生成菜单栏高级属性中的布局方式选项
         self.action_Engine_List.append(QAction(self.TypeEngine_List[i], self, checkable=True))
         self.action_Engine_List[i].triggered.connect(lambda: self.Engine_Decision(i))
 
-    def DefineFontSize(self, i):
+    def DefineFontSize(self, i):   # 生成菜单栏高级属性中的字体大小选项
         self.action_FontSize_List.append(QAction(str(self.FontSize_List[i]), self, checkable=True))
         self.action_FontSize_List[i].triggered.connect(lambda: self.FontSize_Decision(i))
 
-    def DefineTypeEdge(self, i):
+    def DefineTypeEdge(self, i):   # 生成菜单栏高级属性中的边格式选项
         self.action_TypeEdge_List.append(QAction(str(self.TypeEdge_List[i]), self, checkable=True))
         self.action_TypeEdge_List[i].triggered.connect(lambda: self.TypeEdge_Decision(i))
 
-    def TypeGraph_Decision(self, i):
+    def TypeGraph_Decision(self, i):   # 高级属性之有向图或无向图
         for j in range(len(self.action_TypeGraph_List)):
             self.action_TypeGraph_List[j].setChecked(False)
         self.action_TypeGraph_List[i].setChecked(True)
         self.typegraph = self.TypeGraph_List[i]
 
-    def Engine_Decision(self, i):
+    def Engine_Decision(self, i):   # 高级属性之布局方式
         for j in range(len(self.action_Engine_List)):
             self.action_Engine_List[j].setChecked(False)
         self.action_Engine_List[i].setChecked(True)
         self.engine = self.TypeEngine_List[i]
 
-    def FontSize_Decision(self, i):
+    def FontSize_Decision(self, i):   # 高级属性之字体大小
         for j in range(len(self.action_FontSize_List)):
             self.action_FontSize_List[j].setChecked(False)
         self.action_FontSize_List[i].setChecked(True)
         self.fontsize = self.FontSize_List[i]
 
-    def TypeEdge_Decision(self, i):
+    def TypeEdge_Decision(self, i):   # 高级属性之边格式
         for j in range(len(self.action_TypeEdge_List)):
             self.action_TypeEdge_List[j].setChecked(False)
         self.action_TypeEdge_List[i].setChecked(True)
         self.typeedge = self.TypeEdge_List[i]
 
-    def Help(self):
+    def Help(self):   # 帮助
         QMessageBox.question(self, "Help",
                              "If you have problems using this software, please visit http://graphviz.org/ for some information. Or you can contact me.",
                              QMessageBox.Yes)

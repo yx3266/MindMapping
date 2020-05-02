@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import *
 import sys,time
 import MainWindow
 
-if __name__ == '__main__':
+if __name__ == '__main__':           #程序入口
     app = QApplication(sys.argv)
     GUI_Window = MainWindow.MainWindow()
     GUI_Window.show()

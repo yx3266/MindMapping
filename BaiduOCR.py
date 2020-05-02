@@ -1,5 +1,6 @@
 from aip import AipOcr
 
+# 百度OCR接口属性
 APP_ID = '19266231'
 API_KEY = 'aWbq8mIiC3K13QoCGH6YPUu3'
 SECRET_KEY = 'Fe1c7PmQvScwwg1m1O4rLnoXGLNszGRD'
@@ -19,7 +20,7 @@ def basicAccurate(file):
     result = aipOcr.basicAccurate(file, options)
     return (result)
 
-
+# 以列表的形式返回图片中提取的每一行文本
 def detect_image(filepath):
     file = get_file_content(filepath)
     result = basicAccurate(file)
